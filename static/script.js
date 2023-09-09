@@ -1,59 +1,109 @@
-/*const chatForm = document.getElementById('chat-form');
-const userInput = document.getElementById('user-input');
-const sendButton = document.getElementById('send-button');
-const chatBox = document.getElementById('chat-box');
+/*const form = document.getElementById('chat-form');
+const userInput = document.getElementById('user_input');
+const chatBox = document.querySelector('.chat-box');
+const submitButton = document.querySelector('.send-button');
+const loadingElement = document.getElementById("loading");
 
-chatForm.addEventListener('submit', (event) => {
+form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const message = userInput.value;
-  userInput.value = '';
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/chatbot');
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.onload = () => {
-    const response = JSON.parse(xhr.responseText).response;
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-    messageElement.innerHTML = `
-      <img src="assets/chatbot.jpg" alt="Chatbot Avatar" class="chatbot-image">
-      <p>${response}</p>
-    `;
-    chatBox.appendChild(messageElement);
-  };
-  xhr.send(`user_input=${message}`);
-});*/
+  const userMessage = userInput.value;
+  submitButton.disabled = true;
+  // Show loading indicator
+  showLoading();
+  const message = document.createElement('div');
+  message.classList.add('message');
+  message.innerHTML = `
+    <img src="static/user_avatar.jpg" alt="User Avatar" class="user-image">
+    <p>${userMessage}</p>
+  `;
+  chatBox.appendChild(message);
+  // Do something that takes some time, such as fetching data from a server.
+  setTimeout(() => {
+    fetch('/chatbot', {
+      method: 'POST',
+      body: new FormData(form)
+    })
+    .then(response => response.json())
+    .then(data => {
+      const message = document.createElement('div');
+      message.classList.add('message');
+      message.innerHTML = `
+        <img src="static/chatbot.jpg" alt="Chatbot Avatar" class="chatbot-image">
+        <p>${data.response}</p>
+      `;
+      chatBox.appendChild(message);
+      // Hide loading indicator
+      hideLoading();
+      // Re-enable the submit button
+      submitButton.disabled = false;
+      // Scroll down to the last message
+      chatBox.scrollTop = chatBox.scrollHeight;
+      userInput.value = '';
+    });
+  }, 1000);
+});
+
+function showLoading() {
+  if (loadingElement) {
+    loadingElement.textContent = "...";
+  }
+}
+
+function hideLoading() {
+  loadingElement.textContent = "";
+}*/
 
 const form = document.getElementById('chat-form');
 const userInput = document.getElementById('user_input');
 const chatBox = document.querySelector('.chat-box');
+const submitButton = document.querySelector('.send-button');
+const loadingElement = document.getElementById("loading");
 
 form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const userMessage = userInput.value;
-    console.log('User Message:', userMessage);
-    //userInput.value = '';
-    console.log('User Message1:', userMessage);
-    const message = document.createElement('div');
-    message.classList.add('message');
-    message.innerHTML = `
-        <img src="assets/user.jpg" alt="User Avatar" class="user-image">
-        <p>${userMessage}</p>
-    `;
-    chatBox.appendChild(message);
+  event.preventDefault();
+  const userMessage = userInput.value;
+  submitButton.disabled = true;
+  // Show loading indicator
+  showLoading();
+  const message = document.createElement('div');
+  message.classList.add('message');
+  message.innerHTML = `
+    <img src="static/cropped.jpg" alt="User Avatar" class="user-image">
+    <p>${userMessage}</p>
+  `;
+  chatBox.appendChild(message);
+  // Do something that takes some time, such as fetching data from a server.
+  setTimeout(() => {
     fetch('/chatbot', {
-        method: 'POST',
-        body: new FormData(form)
+      method: 'POST',
+      body: new FormData(form)
     })
     .then(response => response.json())
     .then(data => {
-        const message = document.createElement('div');
-        message.classList.add('message');
-        console.log(data.response);
-        message.innerHTML = `
-            <img src="assets/chatbot.jpg" alt="Chatbot Avatar" class="chatbot-image">
-            <p>${data.response}</p>
-        `;
-        chatBox.appendChild(message);
+      const message = document.createElement('div');
+      message.classList.add('message');
+      message.innerHTML = `
+        <img src="static/chatbot.jpg" alt="Chatbot Avatar" class="chatbot-image">
+        <p>${data.response}</p>
+      `;
+      chatBox.appendChild(message);
+      // Hide loading indicator
+      hideLoading();
+      // Re-enable the submit button
+      submitButton.disabled = false;
+      // Scroll down to the last message
+      message.scrollIntoView({ behavior: 'smooth' });
+      userInput.value = '';
     });
+  }, 1000);
 });
 
+function showLoading() {
+  if (loadingElement) {
+    loadingElement.textContent = "...";
+  }
+}
+
+function hideLoading() {
+  loadingElement.textContent = "";
+}

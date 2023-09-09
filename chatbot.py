@@ -1,5 +1,5 @@
 import re
-import response as long
+import resp as res
 from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
@@ -48,18 +48,27 @@ def check_all_messages(message):
     response('Thank you!', ['i', 'love', 'coding'], required_words=['coding'])
     response('Nothing much just improving my skills and learning from my friends to improve my ablities', ['whats', 'up'], required_words=['whats'])
     response('You are not a failure. You are still learning and growing.',['failure'],required_words=['failure'])
-
-    # Longer responses
-    response(long.R_ADVICE, ['give', 'advice'], required_words=['advice'])
-    response(long.R_EATING, ['what', 'you', 'eat'], required_words=['you', 'eat'])
-    response(long.R_HAPPY,['why','happy'],required_words=['happy'])
-    response(long.R_END,['without','me','end'],required_words=['end'])
-    response(long.R_LIFE,['do','anything','life'],required_words=['anything','life'])
-    response(long.R_SAD,['embarrassed','bad','shitty','sucks','sad'],single_response=True)
-    response(long.R_STRESS,['stress','terrified','anxious','nervous','scared','stressed'],single_response=True)
+    
+    # res responses
+    response(res.ADVICE, ['give', 'advice'], required_words=['advice'])
+    response(res.EATING, ['what', 'you', 'eat'], required_words=['you', 'eat'])
+    response(res.HAPPY,['why','happy'],required_words=['happy'])
+    response(res.END,['without','me','end'],required_words=['end'])
+    response(res.LIFE,['do','anything','life','living'],required_words=['anything','life'])
+    response(res.SAD,['embarrassed','bad','shitty','sucks','sad'],single_response=True)
+    response(res.STRESS,['stress','terrified','anxious','nervous','scared','stressed'],single_response=True)
+    response(res.LIFE,['what','life'],single_response=True)
+    response(res.LIVE,['why','live'],single_response=True)
+    response(res.LOVE,['nobody','love','loves'],single_response=True)
+    response(res.HOPE,['hope','hopelessness',],single_response=True)
+    response(res.FIT,['fit','world','good enough'],single_response=True)
+    response(res.CRAZY,['crazy','going'],required_words=['crazy'])
+    response(res.BETTER,['better','mood','negative'],single_response=True)
+    response(res.ME,['why','me'],single_response=True)
+    response(res.TIRED,['tired','felling'],single_response=True)
 
     best_match = max(highest_prob_list, key=highest_prob_list.get)
-    return long.unknown() if highest_prob_list[best_match] < 1 else best_match
+    return res.unknown() if highest_prob_list[best_match] < 1 else best_match
 
 # Used to get the response
 def get_response(user_input):

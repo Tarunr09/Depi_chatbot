@@ -10,17 +10,18 @@
     />
   </head>
   <body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <div class="header">Mental Health Chat Bot</div>
     <div class="pictures-container">
-      <img src="/assets/image1" alt="Image 1" class="picture" />
-      <img src="/assets/image2.jpg" alt="Image 2" class="picture" />
-      <img src="/assets/image3.jpg" alt="Image 3" class="picture" />
+      <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Image 1" class="picture" />
+      <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Image 2" class="picture" />
+      <img src="{{ url_for('static', filename='image3.jpg') }}" alt="Image 3" class="picture" />
     </div>
     <div class="chat-container">
       <div class="chat-box">
         <div class="message">
           <img
-            src="assets/chatbot.jpg"
+            src="{{ url_for('static', filename='chatbot.jpg') }}"
             alt="Chatbot Avatar"
             class="chatbot-image"
           />
@@ -40,7 +41,11 @@
               <button type="submit" class="send-button">&#x27A4;</button>
             </div>
           </form>
-          <div id="chat-box"></div>
+          <div class="loading-container">
+            <div id="loading"></div>
+          </div>
+          <div id="chat-box" class="user-image"></div>
+          
         </div>
       </div>
     </div>
